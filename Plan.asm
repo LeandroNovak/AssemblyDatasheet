@@ -1,7 +1,7 @@
 COMMENT #
 	Planilha desenvolvida em Assembly na disciplina 
 	Laboratório de Arquitetura e Organizacao de Computadores 2
-    Autor: Leandro Novak
+    	Autor: Leandro Novak
         
 	// Funcao:	// Estado atual:
 	cel 		Basicamente Implementada
