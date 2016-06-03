@@ -1,5 +1,5 @@
 COMMENT #
-	Planilha desenvolvida em Assembly na disciplina 
+	Planilha desenvolvida em Assembly na disciplina v.1
 	Laboratório de Arquitetura e Organizacao de Computadores 2
     	Autor: Leandro Novak
         
