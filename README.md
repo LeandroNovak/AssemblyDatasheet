@@ -2,15 +2,15 @@
 
 A simple datasheet program developed using Microsoft ASM.
 
-	**Function:		Current state:**
+	Function:		Current state:
 	cel 			Basically implemented/Functional
 	clr	    		Basically implemented/Functional
-	clt			    Basically implemented/Functional
+	clt			Basically implemented/Functional
 	cop   			Basically implemented/Functional
 	cut		    	Basically implemented/Functional
 	int   			Basically implemented/Functional
 	max		    	Not implemented
-	med			    Not implemented
+	med			Not implemented
 	min   			Not implemented
 	mul   			Not implemented
 	opn   			Not implemented
