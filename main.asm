@@ -1,6 +1,6 @@
 COMMENT #
-	Planilha desenvolvida em Assembly na disciplina 
-	LaboratÛrio de Arquitetura e Organizacao de Computadores 2
+	Planilha desenvolvida em Assembly na disciplina v.2
+	Laborat√≥rio de Arquitetura e Organizacao de Computadores 2
     	Autor: Leandro Novak
         
 	Funcao:		Estado atual:
@@ -10,12 +10,12 @@ COMMENT #
 	cop			Basicamente Implementada
 	cut			Basicamente Implementada
 	int			Basicamente Implementada
-	max			N„o Implementada
-	med			N„o Implementada
-	min			N„o Implementada
-	mul			N„o Implementada
-	opn			N„o Implementada
-	sav			N„o Implementada
+	max			N√£o Implementada
+	med			N√£o Implementada
+	min			N√£o Implementada
+	mul			N√£o Implementada
+	opn			N√£o Implementada
+	sav			N√£o Implementada
 	str			Basicamente Implementada
 	sub			Basicamente Implementada
 	sum			Basicamente Implementada
@@ -177,7 +177,7 @@ _lE:
 	ret
 _ReadInput ENDP
 
-; Limpa a linha de entrada de usu·rio
+; Limpa a linha de entrada de usu√°rio
 _ClearInput PROC uses edx
 	mov dh, 28
 	mov dl, 4
@@ -238,7 +238,7 @@ _notValid:
 _CelFunc ENDP
 
 ; CLRFUNC: Limpa o conteudo da celula previamente selecionada
-; N„o recebe nada como parametro
+; N√£o recebe nada como parametro
 _ClrFunc PROC uses eax ebx ecx edx
 	mov eax, currentCell
 	mov ebx, 0
@@ -254,7 +254,7 @@ _error:
 _ClrFunc ENDP
 
 ; CLTFUNC: Limpa todas as celulas da tabela
-; N„o recebe nada como parametro
+; N√£o recebe nada como parametro
 _CltFunc PROC uses eax ebx ecx edx
 	mov eax, offset line01
 	mov ecx, 4800
