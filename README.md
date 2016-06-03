@@ -2,8 +2,8 @@
 
 A simple datasheet program developed using Microsoft ASM.
 
-	__Function:__		__Current state:__
-	cel 		    Basically implemented/Functional
+	**Function:		Current state:**
+	cel 			Basically implemented/Functional
 	clr	    		Basically implemented/Functional
 	clt			    Basically implemented/Functional
 	cop   			Basically implemented/Functional
