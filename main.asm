@@ -82,7 +82,7 @@ line18 CELL 6 DUP(<>)
 line19 CELL 6 DUP(<>)
 line20 CELL 6 DUP(<>)
 
-teste BYTE "PERIGO!!!", 0
+t_test BYTE "Danger!", 0
 ; Code segment
 .code
 main PROC
