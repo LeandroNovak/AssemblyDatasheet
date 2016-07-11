@@ -3,19 +3,20 @@
 A simple datasheet program developed using Microsoft ASM.
 
 	Function:		Current state:
-	cel				Basically implemented/Functional
-	clr				Basically implemented/Functional
-	clt				Basically implemented/Functional
-	cop   			Basically implemented/Functional
-	cut		    	Basically implemented/Functional
-	int   			Basically implemented/Functional
-	max		    	Not implemented
-	med				Not implemented
-	min   			Not implemented
-	mul   			Not implemented
-	opn   			Not implemented
-	sav   			Not implemented
-	str   			Basically implemented/Functional
-	sub   			Basically implemented/Functional
-	sum   			Basically implemented/Functional
-	ext   			Basically implemented/Functional
+	cel			Functional
+	clr			Functional
+	clt			Functional
+	cop			Functional
+	cut			Functional
+	int			Functional
+	max			Functional
+	med			Functional
+	min			Functional
+	mul			Functional
+	opn			Functional
+	sav			Functional
+	str			Functional
+	sub			Functional
+	sum			Functional
+	ext			Functional
+	hlp			Functional
