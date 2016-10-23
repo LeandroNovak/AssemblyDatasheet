@@ -1,9 +1,9 @@
 COMMENT #
 	Planilha desenvolvida em Assembly na disciplina v.6
 	Laboratório de Arquitetura e Organizacao de Computadores 2
-    Autor: Leandro Novak
+    	Autor: Leandro Novak
 
-	Funcao:		Estado atual:
+	Funcao:			Estado atual:
 	CEL			Finalizada
 	CLR			Finalizada
 	CLT			Finalizada
