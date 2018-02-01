@@ -1,3 +1,0 @@
-﻿  Assembling main.asm...
-MASM : fatal error A1000: cannot open file : main.asm
-C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\BuildCustomizations\masm.targets(50,5): error MSB3721: The command "ml.exe /c /nologo /Sg /WX /Zi /Fo"Debug\main.obj" /Fl"main.lst" /I "c:\Irvine" /W3 /errorReport:prompt  /Tamain.asm" exited with code 1.

@@ -1,9 +1,9 @@
 COMMENT #
 	Planilha desenvolvida em Assembly na disciplina v.6
 	Laboratório de Arquitetura e Organizacao de Computadores 2
-    	Autor: Leandro Novak
+	Autor: Leandro Novak
 
-	Funcao:			Estado atual:
+	Funcao:		Estado atual:
 	CEL			Finalizada
 	CLR			Finalizada
 	CLT			Finalizada
@@ -22,7 +22,8 @@ COMMENT #
 	SUB			Finalizada
 	SUM			Finalizada
 
-	As demais funcoes presentes na planilha sao de uso interno da planilha, cuja utilizacao nao é solicitada pelo usuario, mas ocorre de forma automatica quando necessario.
+	As demais funcoes presentes na planilha sao de uso interno da planilha, cuja utilizacao nao é solicitada pelo usuario, 
+	mas ocorre de forma automatica quando necessario.
 
 	Obs. Aplicacao feita para janelas com tamanho 120 x 30 (Windows 10). 
 #
@@ -140,9 +141,9 @@ GetOffsetCell	PROTO cellAsString: DWORD
 GotoPosXY		PROTO posx: DWORD, posy: DWORD
 SetColor		PROTO color: DWORD
 
-; ---------------------------------------------------------------------------------------------------------------------------------------------------
+;------------------------------------------------------------------------------------------------------------------------------------
 ; Funcao main
-; ---------------------------------------------------------------------------------------------------------------------------------------------------
+;------------------------------------------------------------------------------------------------------------------------------------
 main PROC
 	finit
 	invoke SetColor, (lightGray + (16 * blue))
@@ -160,12 +161,12 @@ main PROC
 	exit
 main ENDP
 
-; ---------------------------------------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------------------------------------------------------
 ; Le o comando digitado pelo usuario
-; Recebe stringPtr que eh um ponteiro para a variavel que armazenara a string digitada pelo usuario.
-; ---------------------------------------------------------------------------------------------------------------------------------------------------
+; Recebe stringPtr, um ponteiro para a variavel que armazenara a string digitada pelo usuario.
+;-----------------------------------------------------------------------------------------------------------------------------
 ReadInput PROC USES EDX, stringPtr: PTR DWORD
-	mov ecx, 18										; Trecho que prepara a interface para a leitura da entrada de usuario, limpando e desenhando certos itens.
+	mov ecx, 18									; Trecho que prepara a interface para a leitura da entrada de usuario;
 	invoke SetColor, (lightGray + (16 * blue))
 	invoke GoToPosXY, 0, 28
 	mov edx, offset separator
@@ -176,140 +177,140 @@ ReadInput PROC USES EDX, stringPtr: PTR DWORD
 	invoke GoToPosXY, 4, 28
 
 	mov edx, stringPtr
-	call ReadString									; Le a entrada do usuario como uma string.
-	invoke Str_copy, stringPtr, addr tempBuffer		; Salva uma copia da entrada digitada.
-	invoke Str_ucase, stringPtr						; Deixa a entrada toda em letras maiusculas.
-	invoke ProcessString, stringPtr					; Chama a funcao que processara a entrada e definira qual a funcao escolhida.
+	call ReadString								; Le a entrada do usuario como uma string.
+	invoke Str_copy, stringPtr, addr tempBuffer	; Salva uma copia da entrada digitada.
+	invoke Str_ucase, stringPtr					; Deixa a entrada toda em letras maiusculas.
+	invoke ProcessString, stringPtr				; Chama a funcao que processara a entrada.
 	call Crlf
 	ret
 ReadInput ENDP
 
-; ---------------------------------------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------------------------------------------------------
 ; Processa a entrada do usuario
 ; Funcao chamada automaticamente
-; Recebe stringPtr que eh um ponteiro para a string digitada pelo usuario
-; ---------------------------------------------------------------------------------------------------------------------------------------------------
+; Recebe stringPtr, um ponteiro para a string digitada pelo usuario
+;-----------------------------------------------------------------------------------------------------------------------------
 ProcessString PROC USES EAX EBX EDX, stringPtr: PTR DWORD
 	mov edx, stringPtr
 	mov eax, [edx]
 
-	mov edx, offset functions						; Neste trecho eh feita a verificacao da parte inicial entrada fornecida pelo usuario
-	cmp eax, [edx]									; se for CEL
+	mov edx, offset functions	; Neste trecho eh feita a verificacao da parte inicial entrada fornecida pelo usuario
+	cmp eax, [edx]				; se for CEL
 	jnz _clr
 	invoke Func_CEL, stringPtr
 	jmp _end
  _clr:
 	add edx, 4
-	cmp eax, [edx]									; CLR
+	cmp eax, [edx]				; CLR
 	jnz _clt
 	invoke Func_CLR
 	jmp _end
  _clt:
 	add edx, 4
-	cmp eax, [edx]									; CLT
+	cmp eax, [edx]				; CLT
 	jnz _cop
 	invoke Func_CLT
 	jmp _end
  _cop:
 	add edx, 4
-	cmp eax, [edx]									; COP
+	cmp eax, [edx]				; COP
 	jnz _cut
 	invoke Func_COP, stringPtr
 	jmp _end
  _cut:
 	add edx, 4
-	cmp eax, [edx]									; CUT
+	cmp eax, [edx]				; CUT
 	jnz _ext
 	invoke Func_CUT, stringPtr
 	jmp _end
  _ext:
 	add edx, 4
-	cmp eax, [edx]									; EXT
+	cmp eax, [edx]				; EXT
 	jnz _flt
 	invoke Func_EXT
 	jmp _end
  _flt:
  	add edx, 4
-	cmp eax, [edx]									; FLT
+	cmp eax, [edx]				; FLT
 	jnz _hlp
 	invoke Func_FLT
 	jmp _end
  _hlp:
 	add edx, 4
-	cmp eax, [edx]									; HLP
+	cmp eax, [edx]				; HLP
 	jnz _int
 	invoke Func_HLP
 	jmp _end
  _int:
 	add edx, 4
-	cmp eax, [edx]									; INT
+	cmp eax, [edx]				; INT
 	jnz _max
 	invoke Func_INT
 	jmp _end
  _max:
 	add edx, 4
-	cmp eax, [edx]									; MAX
+	cmp eax, [edx]				; MAX
 	jnz _med
 	invoke Func_MAX, StringPTR
 	jmp _end
  _med:
 	add edx, 4
-	cmp eax, [edx]									; MED
+	cmp eax, [edx]				; MED
 	jnz _min
 	invoke Func_MED, StringPTR
 	jmp _end
  _min:
 	add edx, 4
-	cmp eax, [edx]									; MIN
+	cmp eax, [edx]				; MIN
 	jnz _opn
 	invoke Func_MIN, StringPTR
 	jmp _end
  _opn:
 	add edx, 4
-	cmp eax, [edx]									; OPN
+	cmp eax, [edx]				; OPN
 	jnz _sav
 	invoke Func_OPN
 	jmp _end
  _sav:
 	add edx, 4
-	cmp eax, [edx]									; SAV
+	cmp eax, [edx]				; SAV
 	jnz _str
 	invoke Func_SAV
 	jmp _end
  _str:
 	add edx, 4
-	cmp eax, [edx]									; STR
+	cmp eax, [edx]				; STR
 	jnz _sub
 	invoke Func_STR
 	jmp _end
  _sub:
 	add edx, 4
-	cmp eax, [edx]									; SUB
+	cmp eax, [edx]				; SUB
 	jnz _sum
 	invoke Func_SUB, StringPTR
 	jmp _end
  _sum:
 	add edx, 4
-	cmp eax, [edx]									; SUM
+	cmp eax, [edx]				; SUM
 	jnz _error
 	invoke Func_SUM, StringPTR
 	jmp _end
- _error:											; Caso onde a entrada eh invalida
+ _error:						; Caso onde a entrada eh invalida
 	invoke SetColor, (lightGray + (16 * blue))
 	invoke GoToPosXY, 0, 27
 	mov edx, offset separator
-	call WriteString								; Limpa a area de feedback
+	call WriteString			; Limpa a area de feedback
 	invoke GotoPosXY, 1, 27
-	mWrite "OPERACAO INVALIDA!"						; Exibe uma mensagem de erro
+	mWrite "OPERACAO INVALIDA!"	; Exibe um erro
 
  _end:
 	ret
 ProcessString ENDP
 
-; ---------------------------------------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------------------------------------------------------
 ; Seleciona a celula digitada salvando em offsetCell o offset da celula desejada
-; Recebe stringPtr que eh um ponteiro para a string digitada pelo usuario
-; ---------------------------------------------------------------------------------------------------------------------------------------------------
+; Recebe stringPtr, um ponteiro para a string digitada pelo usuario
+;-----------------------------------------------------------------------------------------------------------------------------
 Func_CEL PROC USES EAX EBX ECX EDX, StringPTR: PTR DWORD
 	invoke SetColor, (lightGray + (16 * blue))
 	invoke GoToPosXY, 0, 27
@@ -329,10 +330,10 @@ Func_CEL PROC USES EAX EBX ECX EDX, StringPTR: PTR DWORD
 
 	mov ebx, SIZECELL								; Move para EBX o tamanho de um struct CELL
 	push edx										; Salva o valor de EDX antes da multiplicacao
-	mul ebx											; Multiplica EAX pelo tamanho de uma celula, deslocando para a coluna desejada
+	mul ebx											; Multiplica EAX pelo tamanho de uma celula, deslocando para a coluna
 	pop edx											; Restitui o valor de EDX
 	inc edx											; "Aponta" EDX para o trecho da string que representa a linha
-	mov ecx, 2										; Atribui a ECX 2, que eh o numero de digitos que representam a linha
+	mov ecx, 2										; Atribui a ECX 2,, o numero de digitos que representam a linha
 	push eax										; Salva o valor de EAX
 	call ParseInteger32								; Transforma o numero da string em um inteiro e atribui a EAX
 	dec eax											; Ajusta o indice da celula que inicia a contagem em 0
@@ -374,10 +375,10 @@ Func_CEL PROC USES EAX EBX ECX EDX, StringPTR: PTR DWORD
 	ret
 Func_CEL ENDP
 
-; ---------------------------------------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------------------------------------------------------
 ; Limpa todo o conteudo de uma celula
 ; Nao recebe parametro
-; ---------------------------------------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------------------------------------------------------
 Func_CLR PROC USES EAX EBX ECX EDX
 	invoke SetColor, (lightGray + (16 * blue))		; Limpa a area de feedback 
 	invoke GoToPosXY, 0, 26
@@ -390,8 +391,8 @@ Func_CLR PROC USES EAX EBX ECX EDX
 	mov al, isSelectedCell							; Move para al a flag de celula selecionada
 	cmp eax, 0										; Verifica se ha alguma celula selecionada (flag diferente de 0)
 	jz _error
-	mov ebx, 0										; Move para ebx 0, que eh o valor presente em celulas limpas
-	mov ecx, 10										; Move para ecx 10, que eh o tamanho de uma celula em dwords (40 bytes)
+	mov ebx, 0										; Move para ebx 0,, o valor presente em celulas limpas
+	mov ecx, 10										; Move para ecx 10,, o tamanho de uma celula em dwords (40 bytes)
 	mov eax, offsetCell								; Move para eax o offset da celula
  _clear:											; Executa a limpeza de 4 em 4 bytes
 	mov [eax], ebx
@@ -409,12 +410,12 @@ Func_CLR PROC USES EAX EBX ECX EDX
 	ret
 Func_CLR ENDP
 
-; ---------------------------------------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------------------------------------------------------
 ; Limpa todo o conteudo da planilha
 ; Nao recebe parametro
-; ---------------------------------------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------------------------------------------------------
 Func_CLT PROC USES EAX ECX EDX
-	invoke GotoPosXY, 1, 26							; O trecho abaixo exibe uma mensagem pedindo a confirmacao de limpeza das celulas.
+	invoke GotoPosXY, 1, 26
 	mWrite "DESEJA REALMENTE LIMPAR TODA A PLANILHA? ESTA OPERACAO NAO PODE SER DESFEITA."		
 	invoke GotoPosXY, 1, 27
 	mWrite "Pressione 'S' para continuar ou 'N' para cancelar: "								
@@ -445,7 +446,7 @@ Func_CLT PROC USES EAX ECX EDX
 	invoke GotoPosXY, 1, 27
 	mWrite "OPERACAO CANCELADA. A PLANILHA NAO FOI LIMPA."
 	jmp _end
- _continue:											; Limpa as celulas de 4 em 4 bytes (semelhante ao processo de limpeza de uma unica celula)
+ _continue:											; Limpa as celulas de 4 em 4 bytes
 	xor eax, eax
 	mov edx, offset line1							; Inicio da area a ser limpa
 	mov ecx, 1410									; Tamanho total das celulas em dwords
@@ -466,15 +467,15 @@ Func_CLT PROC USES EAX ECX EDX
 	ret
 Func_CLT ENDP
 
-; ---------------------------------------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------------------------------------------------------
 ; Copia o conteudo da celula origem para a celula destino.
-; Recebe stringPtr que eh um ponteiro para a string digitada pelo usuario
+; Recebe stringPtr, um ponteiro para a string digitada pelo usuario
 ; Ex. COP A10 A20 copia o conteudo da celula A10 para a celula A20
-; ---------------------------------------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------------------------------------------------------
 Func_COP PROC USES EAX EBX ECX EDX, StringPTR: PTR DWORD
 	LOCAL offset1: DWORD
 	LOCAL offset2: DWORD
-	mov edx, StringPTR								; Move para edx o endereco da string que contem a entrada informada pelo usuario
+	mov edx, StringPTR								; Move para edx o endereco do buffer de entrada
 
 	add edx, 4										; Faz edx apontar para o nome da primeira celula na string
 	mov ebx, [edx]
@@ -502,27 +503,27 @@ Func_COP PROC USES EAX EBX ECX EDX, StringPTR: PTR DWORD
 	add ebx, 4
 	loop _move
 	jmp _sucess										; Salta ao fim da copia
- _error:											; Exibe uma mensagem de erro caso não seja possivel copiar uma das celulas
+ _error:											; Exibe um erro caso não seja possivel copiar uma das celulas
 	invoke GotoPosXY, 1, 27
 	mWrite "Alguma das celulas selecionadas eh invalida! Tente novamente."
 	jmp _exit
- _sucess:											; Exibe uma mensagem informando que a celula foi copiada com sucesso
+ _sucess:											; Exibe uma mensagem de sucesso
  	invoke GotoPosXY, 1, 27
 	mWrite "Copia efetuada com sucesso"
  _exit:
- 	invoke UpdatePlan								; Chama a funcao de atualizacao da planilha (necessaria para casos onde ha alguma celula cujo valor dependa da celula destino).
+ 	invoke UpdatePlan								; Chama a funcao de atualizacao da planilha
 	ret
 Func_COP ENDP
 
-; ---------------------------------------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------------------------------------------------------
 ; Move o conteudo da celula origem para a celula destino.
-; Recebe stringPtr que eh um ponteiro para a string digitada pelo usuario
+; Recebe stringPtr, um ponteiro para a string digitada pelo usuario
 ; Ex. CUT A10 A20 copia o conteudo da celula A10 para a celula A20 e apaga o conteudo de A10
-; ---------------------------------------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------------------------------------------------------
 Func_CUT PROC USES EAX EBX ECX EDX, StringPTR: PTR DWORD
 	LOCAL offset1: DWORD
 	LOCAL offset2: DWORD
-	mov edx, StringPTR								; Move para edx o endereco da string que contem a entrada informada pelo usuario
+	mov edx, StringPTR								; Move para edx o endereco do buffer de entrada
 
 	add edx, 4										; Faz edx apontar para o nome da primeira celula na string
 	mov ebx, [edx]
@@ -549,8 +550,8 @@ Func_CUT PROC USES EAX EBX ECX EDX, StringPTR: PTR DWORD
 	add eax, 4										; Avanca o endereco das duas celulas
 	add ebx, 4
 	loop _move
-	jmp _sucess										; Salta ao fim da copia (Recorte eh uma copia seguida da limpeza da celula origem)
- _error:											; Exibe uma mensagem de erro caso não seja possivel copiar uma das celulas
+	jmp _sucess										; Salta ao fim da copia
+ _error:											; Exibe um erro
 	invoke GotoPosXY, 1, 27	
 	mWrite "Alguma das celulas selecionadas eh invalida! Tente novamente."
 	jmp _exit
@@ -558,23 +559,23 @@ Func_CUT PROC USES EAX EBX ECX EDX, StringPTR: PTR DWORD
  	invoke GotoPosXY, 1, 27
 	mWrite "Recorte efetuado com sucesso"
 
-	mov ebx, 0										; Move para ebx 0, que eh o valor padrao das celulas
-	mov ecx, 10										; Move para ecx 10, que eh o tamanho de uma celula em dwords (40 bytes)
+	mov ebx, 0										; Move para ebx 0,, o valor padrao das celulas
+	mov ecx, 10										; Move para ecx 10,, o tamanho de uma celula em dwords
 	mov eax, offset1								; Move para eax o offset da primeira celula
  _clear:											; Efetua a limpeza da celula de 4 em 4 bytes
 	mov [eax], ebx
 	add eax, 4
 	loop _clear
  _exit:
-	invoke UpdatePlan								; Chama a funcao de atualizacao da planilha (necessaria para casos onde ha alguma celula cujo valor dependa da celula origem).
+	invoke UpdatePlan								; Chama a funcao de atualizacao da planilha
 	ret
 Func_CUT ENDP
 
-; ---------------------------------------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------------------------------------------------------
 ; Encerra a execucao da planilha
 ; Nao recebe parametro
 ; Retorna ECX = 0 para sair ou ECX = 1 para continuar na planilha
-; ---------------------------------------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------------------------------------------------------
 Func_EXT PROC USES EAX
 	invoke GotoPosXY, 1, 26							; Pede para o usuario confirmar se deseja mesmo fechar a planilha
 	mWrite "DESEJA REALMENTE FECHAR A PLANILHA?"
@@ -604,14 +605,14 @@ Func_EXT PROC USES EAX
 	ret
 Func_EXT ENDP
 
-; ---------------------------------------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------------------------------------------------------
 ; Atribui um valor real para a celula previamente selecionada
 ; Nao recebe nenhum parametro
-; ---------------------------------------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------------------------------------------------------
 Func_FLT PROC USES EAX EBX ECX EDX
 	xor ecx, ecx
 	mov cl, isSelectedCell							; Verifica se ha uma celula selecionada
-	jecxz _error									; Exibe uma mensagem de erro caso nao haja
+	jecxz _error									; Exibe um erro caso nao haja
 
 	invoke GotoPosXY, 1, 27							; Limpa a area onde sera solicitada a entrada do numero real
 	mov edx, offset separator
@@ -634,7 +635,7 @@ Func_FLT PROC USES EAX EBX ECX EDX
 	mWrite "Atribuicao de real efetuada com sucesso!"
 	jmp _end										; Salta para o fim da funcao
  _error:
- 	invoke GoToPosXY, 0, 27							; Exibe uma mensagem de erro caso nao haja nenhuma celula selecionada
+ 	invoke GoToPosXY, 0, 27							; Exibe um erro caso nao haja nenhuma celula selecionada
 	mov edx, offset separator
 	call WriteString
 	invoke GotoPosXY, 1, 27
@@ -642,14 +643,14 @@ Func_FLT PROC USES EAX EBX ECX EDX
 	jmp _end
 
  _end:
- 	invoke UpdatePlan								; Chama a funcao de atualizacao da planilha (necessaria para casos onde ha alguma celula cujo valor dependa da celula modificada).
+ 	invoke UpdatePlan								; Chama a funcao de atualizacao da planilha
 	ret
 Func_FLT ENDP
 
-; ---------------------------------------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------------------------------------------------------
 ; Exibe a tela de ajuda para o usuario
 ; Nao recebe nenhum parametro
-; ---------------------------------------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------------------------------------------------------
 Func_HLP PROC USES EAX EBX ECX EDX
 	invoke SetColor, (lightGray + (16 * blue))		; Este trecho o cabecalho da tela contendo o titulo "AJUDA"
 	call Clrscr
@@ -662,7 +663,7 @@ Func_HLP PROC USES EAX EBX ECX EDX
 	invoke gotoPosXY, 58, 1
 	mWrite "AJUDA"
 
-	invoke SetColor, (lightGray + (16 * blue))		; Este trecho exibe uma breve descricao das funcoes presentes na planilha, bem como uma legenda para facilitar a leitura.
+	invoke SetColor, (lightGray + (16 * blue))		; Este trecho exibe uma breve descricao das funcoes da planilha
 	call Crlf
 	call Crlf
 	call Crlf
@@ -705,14 +706,14 @@ Func_HLP PROC USES EAX EBX ECX EDX
 	call Crlf
 	mWrite " Para mais detalhes leia o arquivo TXT que se encontra no mesmo diretorio do executavel da planilha."
  _input:
-	invoke GotoPosXY, 1, 27							; Pede que o usuario pressione a tecla enter caso deseje retornar para a planilha
+	invoke GotoPosXY, 1, 27					; Pede que o usuario pressione a tecla enter caso deseje retornar para a planilha
 	mWrite "Pressione a tecla enter para retornar a planilha: "
 	xor eax, eax
 	call ReadChar
 	cmp al, 0Dh
 	jz _exit										; Salta para o fim da funcao
 	invoke GotoPosXY, 1, 26						
-	mWrite "A tecla pressionada eh invalida."		; Mensagem de erro caso a tecla seja invalida. Pede para pressionar novamente.
+	mWrite "A tecla pressionada eh invalida."		; Mensagem de erro caso a tecla seja invalida.
 	jmp _input
  _exit:
 	invoke SetColor, (lightGray + (16 * blue))	
@@ -721,17 +722,17 @@ Func_HLP PROC USES EAX EBX ECX EDX
 	ret
 Func_HLP ENDP
 
-; ---------------------------------------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------------------------------------------------------
 ; Atribui um valor inteiro com sinal para a celula previamente selecionada
 ; Nao recebe nenhum parametro
 ; Exige que a celula de destino tenha sido previamente selecionada
-; ---------------------------------------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------------------------------------------------------
 Func_INT PROC USES EAX EBX ECX EDX
 	xor ecx, ecx
 	mov cl, isSelectedCell							; Verifica se ha alguma celula selecionada
 	jecxz _error									; Salta para _error caso não haja
 
-	invoke GotoPosXY, 1, 27							; Este trecho exibe uma mensagem pedindo para o usuario digitar o valor inteiro desejado.
+	invoke GotoPosXY, 1, 27							; Pede para o usuario digitar o valor desejado.
 	mov edx, offset separator
 	call WriteString
 	invoke GotoPosXY, 1, 27
@@ -745,7 +746,7 @@ Func_INT PROC USES EAX EBX ECX EDX
 	mov [edx], eax									; Salva o inteiro digitado na celula
 	jmp _sucess										; Salta para area que exibe a mensagem de sucesso
 
- _error:											; Exibe uma mensagem de erro caso nao haja nenhuma celula selecionada
+ _error:											; Exibe um erro
   	invoke GoToPosXY, 0, 27
 	mov edx, offset separator
 	call WriteString
@@ -759,16 +760,16 @@ Func_INT PROC USES EAX EBX ECX EDX
  	invoke GotoPosXY, 1, 27
 	mWrite "Atribuicao de inteiro efetuada com sucesso!"
  _end:
- 	invoke UpdatePlan								; Chama a funcao de atualizacao da planilha (necessaria para casos onde ha alguma celula cujo valor dependa da celula modificada).
+ 	invoke UpdatePlan								; Chama a funcao de atualizacao da planilha
 	ret
 Func_INT ENDP
 
-; ---------------------------------------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------------------------------------------------------
 ; Calcula o maior valor dentre um conjunto de celulas
-; Recebe stringPtr que eh um ponteiro para a string digitada pelo usuario
+; Recebe stringPtr, um ponteiro para a string digitada pelo usuario
 ; A string deve conter a primeira e a ultima celula do intervalo (mesma linha ou mesma coluna/ vizinhas ou nao)
 ; Exige que a celula de destino tenha sido previamente selecionada
-; ---------------------------------------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------------------------------------------------------
 Func_MAX PROC USES EAX EBX ECX EDX, StringPTR: PTR DWORD
 	LOCAL offsetBegin: DWORD
 	LOCAL offsetEnd: DWORD
@@ -965,7 +966,7 @@ Func_MAX PROC USES EAX EBX ECX EDX, StringPTR: PTR DWORD
 	add edx, FNCPOS - FLTPOS						; Move edx para o inicio da area que contem a funcao
 	invoke Str_copy, addr inputBuffer, edx			; Copia a funcao para a celula
 	jmp _sucess
- _error:											; Exibe uma mensagem de erro
+ _error:											; Exibe um erro
 	pop eax
 	invoke GotoPosXY, 1, 27
 	mov edx, offset separator
@@ -986,12 +987,12 @@ Func_MAX PROC USES EAX EBX ECX EDX, StringPTR: PTR DWORD
 	ret
 Func_MAX ENDP
 
-; ---------------------------------------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------------------------------------------------------
 ; Calcula a media dos valores presentes em um conjunto de celulas.
-; Recebe stringPtr que eh um ponteiro para a string digitada pelo usuario
+; Recebe stringPtr, um ponteiro para a string digitada pelo usuario
 ; A string deve conter a primeira e a ultima celula do intervalo (mesma linha ou mesma coluna/ vizinhas ou nao)
 ; Exige que a celula de destino tenha sido previamente selecionada
-; ---------------------------------------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------------------------------------------------------
 Func_MED PROC USES EAX EBX ECX EDX, StringPTR: PTR DWORD
 	LOCAL offsetBegin: DWORD
 	LOCAL offsetEnd: DWORD
@@ -1184,7 +1185,7 @@ Func_MED PROC USES EAX EBX ECX EDX, StringPTR: PTR DWORD
 	add edx, FNCPOS - FLTPOS						; Move edx para o inicio da area que contem a funcao
 	invoke Str_copy, addr inputBuffer, edx			; Copia a funcao para a celula
 	jmp _sucess
- _error:											; Exibe uma mensagem de erro
+ _error:											; Exibe um erro
 	pop eax
 	invoke GotoPosXY, 1, 27
 	mov edx, offset separator
@@ -1204,12 +1205,12 @@ Func_MED PROC USES EAX EBX ECX EDX, StringPTR: PTR DWORD
 	ret
 Func_MED ENDP
 
-; ---------------------------------------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------------------------------------------------------
 ; Calcula o menor valor dentre um conjunto de celulas
-; Recebe stringPtr que eh um ponteiro para a string digitada pelo usuario
+; Recebe stringPtr, um ponteiro para a string digitada pelo usuario
 ; a string deve conter a primeira e a ultima celula do intervalo (mesma linha ou mesma coluna/ vizinhas ou nao)
 ; Exige que a celula de destino tenha sido previamente selecionada
-; ---------------------------------------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------------------------------------------------------
 Func_MIN PROC USES EAX EBX ECX EDX, StringPTR: PTR DWORD
 	LOCAL offsetBegin: DWORD
 	LOCAL offsetEnd: DWORD
@@ -1407,7 +1408,7 @@ Func_MIN PROC USES EAX EBX ECX EDX, StringPTR: PTR DWORD
 	invoke Str_copy, addr inputBuffer, edx			; Copia a funcao para a celula
 	jmp _sucess
 
- _error:											; Exibe uma mensagem de erro
+ _error:											; Exibe um erro
 	pop eax
 	invoke GotoPosXY, 1, 27
 	mov edx, offset separator
@@ -1426,10 +1427,10 @@ Func_MIN PROC USES EAX EBX ECX EDX, StringPTR: PTR DWORD
 	ret
 Func_MIN ENDP
 
-; ---------------------------------------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------------------------------------------------------
 ; Abre a planilha a partir de um arquivo
 ; Nao recebe nenhum parametro
-; ---------------------------------------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------------------------------------------------------
 Func_OPN PROC USES EAX EBX ECX EDX
 	invoke GotoPosXY, 1, 27
 	mov edx, offset separator
@@ -1456,7 +1457,7 @@ Func_OPN PROC USES EAX EBX ECX EDX
 	mov ecx, TOTALCELLS								; Move para ecx o numero total de celulas
 	call ReadFromFile								; Le todas as celulas salvas no arquivo
 	jmp _sucess
- _error:											; Exibe uma mensagem de erro caso nao seja possivel abrir o arquivo
+ _error:											; Exibe um erro caso nao seja possivel abrir o arquivo
 	invoke GotoPosXY, 1, 27
 	mov edx, offset separator
 	call WriteString
@@ -1477,10 +1478,10 @@ Func_OPN PROC USES EAX EBX ECX EDX
 	ret
 Func_OPN ENDP
 
-; ---------------------------------------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------------------------------------------------------
 ; Salva a planilha em um arquivo de texto
 ; Nao recebe nenhum parametro
-; ---------------------------------------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------------------------------------------------------
 Func_SAV PROC
 	invoke GotoPosXY, 1, 27
 	mov edx, offset separator
@@ -1500,7 +1501,7 @@ Func_SAV PROC
 	mov ecx, TOTALCELLS								; Move para ecx o numero total de celulas
 	call WriteToFile								; Salva o conteudo de todas as celulas no arquivo
 	jmp _sucess
- _error:											; Exibe uma mensagem de erro caso nao seja possivel criar o arquivo para salvar
+ _error:											; Exibe um erro caso nao seja possivel criar o arquivo
 	pop eax
 	invoke GotoPosXY, 1, 27
 	mov edx, offset separator
@@ -1509,7 +1510,7 @@ Func_SAV PROC
 	invoke GotoPosXY, 1, 27
 	mWrite "Nao foi possivel salvar a planilha."
 	jmp _end
- _sucess:											; Exibe uma mensagem informando que a planilha foi aberta com sucesso
+ _sucess:											; Informando que a planilha foi aberta com sucesso
  	invoke GotoPosXY, 1, 27
 	mov edx, offset separator
 	call WriteString
@@ -1522,11 +1523,11 @@ Func_SAV PROC
 	ret
 Func_SAV ENDP
 
-; ---------------------------------------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------------------------------------------------------
 ; Atribui uma string para a celula selecionada
 ; Nao recebe nenhum parametro
 ; Exige que a celula destino tenha sido previamente selecionada
-; ---------------------------------------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------------------------------------------------------
 Func_STR PROC USES ECX EDX
 	xor ecx, ecx									; Limpa ECX
 	mov cl, isSelectedCell							; Verifica se ha alguma celula selecionada (flag != 0)
@@ -1553,31 +1554,31 @@ Func_STR PROC USES ECX EDX
 	mov ecx, 19	
 	call ReadString									; Le a string digitada pelo usuario
 	jmp _sucess
- _error:											; Exibe uma mensagem de erro caso nenhuma celula tenha sido selecionada
+ _error:											; Exibe um erro caso nenhuma celula tenha sido selecionada
   	invoke GotoPosXY, 1, 27
  	mov edx, offset separator
 	call WriteString
 	invoke GotoPosXY, 1, 27
 	mWrite "SELECIONE UMA CELULA PRIMEIRO!"
 	jmp _end
- _sucess:											; Exibe uma mensagem informando que a atribuicao de string foi realizada com sucesso
+ _sucess:											; Exibe uma mensagem informando que a operacao foi realizada com sucesso
  	invoke GotoPosXY, 1, 27
  	mov edx, offset separator
 	call WriteString
 	invoke GotoPosXY, 1, 27
 	mWrite "String atribuida com sucesso!"
  _end:
- 	invoke UpdatePlan								; Atualiza a planilha para garantir a consistencia de valores em celulas que dependam da celula alterada
+ 	invoke UpdatePlan								; Atualiza a planilha para garantir a consistencia de valores em celulas
 	ret
 Func_STR ENDP
 
-; ---------------------------------------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------------------------------------------------------
 ; Subtrai o valor de duas celulas e salva na celula selecionada
-; Recebe stringPtr que eh um ponteiro para a string digitada pelo usuario
+; Recebe stringPtr, um ponteiro para a string digitada pelo usuario
 ; A string deve conter o nome de duas celulas
 ; A ordem da operacao eh primeiro valor menos o segundo
 ; Exige que a celula destino tenha sido previamente selecionada
-; ---------------------------------------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------------------------------------------------------
 Func_SUB PROC USES EAX EBX ECX EDX, StringPTR: PTR DWORD
 	LOCAL offset1: DWORD
 	LOCAL offset2: DWORD
@@ -1662,7 +1663,7 @@ Func_SUB PROC USES EAX EBX ECX EDX, StringPTR: PTR DWORD
  _doSub:											; Efetua a subtracao
  	fsub st(1), st(0)
 	fstp trashReal
- _verifyType:										; Verifica se o resultado da subtracao eh decorrente de inteiros ou contem algum float
+ _verifyType:										; Verifica se o resultado da subtracao vem ints ou floats
  	mov dl, flagval
 	cmp dl, 1
 	jz _saveAsInt
@@ -1689,7 +1690,7 @@ Func_SUB PROC USES EAX EBX ECX EDX, StringPTR: PTR DWORD
 	add edx, FNCPOS - FLTPOS
 	invoke Str_copy, addr inputBuffer, edx
 	jmp _sucess
- _error:											; Exibe uma mensagem de erro caso uma das celulas contenha valores invalidos
+ _error:											; Exibe um erro caso uma das celulas contenha valores invalidos
  	invoke GotoPosXY, 1, 27
 	mov edx, offset separator
 	call WriteString
@@ -1707,12 +1708,12 @@ Func_SUB PROC USES EAX EBX ECX EDX, StringPTR: PTR DWORD
 	ret
 Func_SUB ENDP
 
-; ---------------------------------------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------------------------------------------------------
 ; Soma o valor de duas celulas e atribui ah celula selecionada
-; Recebe stringPtr que eh um ponteiro para a string digitada pelo usuario
+; Recebe stringPtr, um ponteiro para a string digitada pelo usuario
 ; A string deve conter o nome de duas celulas
 ; Exige que a celula destino tenha sido previamente selecionada
-; ---------------------------------------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------------------------------------------------------
 Func_SUM PROC USES EAX EBX ECX EDX, StringPTR: PTR DWORD
 	LOCAL offset1: DWORD
 	LOCAL offset2: DWORD
@@ -1821,7 +1822,7 @@ Func_SUM PROC USES EAX EBX ECX EDX, StringPTR: PTR DWORD
 	invoke Str_copy, addr inputBuffer, edx			; Copia a funcao na celula destino
 	fstp trashReal
 	jmp _sucess
- _error:											; Exibe uma mensagem de erro caso algum dos valores seja invalido ou nenhuma celula tenha sido selecionada
+ _error:											; Exibe um erro caso algum dos valores seja invalido
  	invoke GotoPosXY, 1, 27
 	mov edx, offset separator
 	call WriteString
@@ -1839,19 +1840,20 @@ Func_SUM PROC USES EAX EBX ECX EDX, StringPTR: PTR DWORD
 	ret
 Func_SUM ENDP
 
-; ---------------------------------------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------------------------------------------------------
 ; Atualiza toda a planilha
 ; Atualiza o conteudo das celulas 5 vezes para garantir que todas as operacoes foram realizadas
 ; Funcao chamada automaticamente
 ; Nao recebe nada como parametro
-; ---------------------------------------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------------------------------------------------------
 UpdatePlan PROC USES EAX EBX ECX EDX
 	mov edx, offset line1
 	mov ecx, 3
  _reupdate:											; Loop para repetir a atualizacao 3 vezes
  	push ecx
 	mov ecx, 120
- _update:											; Atualiza o conteudo da celula chamando a funcao processUpdate, que recebe a funcao presente na celula e o endereco da celula
+ _update:											; Atualiza o conteudo da celula chamando a funcao processUpdate, 
+ 													; que recebe a funcao presente na celula e o endereco da celula
  	mov al, [edx]									; So atualiza o conteudo da celula se a celula conter uma funcao
 	cmp al, 4
 	jz _continue
@@ -1870,11 +1872,11 @@ UpdatePlan PROC USES EAX EBX ECX EDX
 	ret
 UpdatePlan ENDP
 
-; ---------------------------------------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------------------------------------------------------
 ; Processa a funcao presente na celula para atualizar
 ; Funcao chamada automaticamente
-; Recebe como parametros stringPTR que eh um ponteiro para a funcao presente na celula e cellPtr que eh um ponteiro para a celula
-; ---------------------------------------------------------------------------------------------------------------------------------------------------
+; Recebe como parametros stringPTR, um ponteiro para a funcao presente na celula e cellPtr, um ponteiro para a celula
+;-----------------------------------------------------------------------------------------------------------------------------
 ProcessUpdate PROC USES EAX EBX ECX EDX, stringPtr: PTR DWORD, cellPtr: PTR DWORD
 	mov edx, stringPtr
 	mov eax, [edx]
@@ -1928,11 +1930,11 @@ ProcessUpdate PROC USES EAX EBX ECX EDX, stringPtr: PTR DWORD, cellPtr: PTR DWOR
 	ret
 ProcessUpdate ENDP
 
-; ---------------------------------------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------------------------------------------------------
 ; Faz o mesmo que a funcao de Maximo, porem, sem informar ao usuario se a operacao foi realizada com sucesso ou nao.
 ; Funcao chamada automaticamente
-; Recebe como parametros stringPTR que eh um ponteiro para a funcao presente na celula e cellPtr que eh um ponteiro para a celula
-; ---------------------------------------------------------------------------------------------------------------------------------------------------
+; Recebe como parametros stringPTR, um ponteiro para a funcao presente na celula e cellPtr, um ponteiro para a celula
+;-----------------------------------------------------------------------------------------------------------------------------
 Update_MAX PROC USES EAX EBX ECX EDX, stringPTR: PTR DWORD, actualCell: PTR DWORD
 	LOCAL offsetBegin: DWORD
 	LOCAL offsetEnd: DWORD
@@ -2126,11 +2128,11 @@ Update_MAX PROC USES EAX EBX ECX EDX, stringPTR: PTR DWORD, actualCell: PTR DWOR
 	ret
 Update_MAX ENDP
 
-; ---------------------------------------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------------------------------------------------------
 ; Faz o mesmo que a funcao de Media, porem, sem informar ao usuario se a operacao foi realizada com sucesso ou nao.
 ; Funcao chamada automaticamente
-; Recebe como parametros stringPTR que eh um ponteiro para a funcao presente na celula e cellPtr que eh um ponteiro para a celula
-; ---------------------------------------------------------------------------------------------------------------------------------------------------
+; Recebe como parametros stringPTR, um ponteiro para a funcao presente na celula e cellPtr, um ponteiro para a celula
+;-----------------------------------------------------------------------------------------------------------------------------
 Update_MED PROC USES EAX EBX ECX EDX, stringPTR: PTR DWORD, actualCell: PTR DWORD
 	LOCAL offsetBegin: DWORD
 	LOCAL offsetEnd: DWORD
@@ -2319,11 +2321,11 @@ Update_MED PROC USES EAX EBX ECX EDX, stringPTR: PTR DWORD, actualCell: PTR DWOR
 	ret
 Update_MED ENDP
 
-; ---------------------------------------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------------------------------------------------------
 ; Faz o mesmo que a funcao de minimo, porem, sem informar ao usuario se a operacao foi realizada com sucesso ou nao.
 ; Funcao chamada automaticamente
-; Recebe como parametros stringPTR que eh um ponteiro para a funcao presente na celula e cellPtr que eh um ponteiro para a celula
-; ---------------------------------------------------------------------------------------------------------------------------------------------------
+; Recebe como parametros stringPTR, um ponteiro para a funcao presente na celula e, cellPtr, um ponteiro para a celula
+;-----------------------------------------------------------------------------------------------------------------------------
 Update_MIN PROC USES EAX EBX ECX EDX, stringPTR: PTR DWORD, actualCell: PTR DWORD
 	LOCAL offsetBegin: DWORD
 	LOCAL offsetEnd: DWORD
@@ -2503,11 +2505,11 @@ Update_MIN PROC USES EAX EBX ECX EDX, stringPTR: PTR DWORD, actualCell: PTR DWOR
 	ret
 Update_MIN ENDP
 
-; ---------------------------------------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------------------------------------------------------
 ; Faz o mesmo que a funcao de Subtracao, porem, sem informar ao usuario se a operacao foi realizada com sucesso ou nao.
 ; Funcao chamada automaticamente
-; Recebe como parametros stringPTR que eh um ponteiro para a funcao presente na celula e cellPtr que eh um ponteiro para a celula
-; ---------------------------------------------------------------------------------------------------------------------------------------------------
+; Recebe como parametros stringPTR, um ponteiro para a funcao presente na celula, e cellPtr, um ponteiro para a celula
+;-----------------------------------------------------------------------------------------------------------------------------
 Update_SUB PROC USES EAX EBX ECX EDX, stringPTR: PTR DWORD, actualCell: PTR DWORD
 	LOCAL offset1: DWORD
 	LOCAL offset2: DWORD
@@ -2602,11 +2604,11 @@ Update_SUB PROC USES EAX EBX ECX EDX, stringPTR: PTR DWORD, actualCell: PTR DWOR
 	ret
 Update_SUB ENDP
 
-; ---------------------------------------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------------------------------------------------------
 ; Faz o mesmo que a funcao de Soma, porem, sem informar ao usuario se a operacao foi realizada com sucesso ou nao.
 ; Funcao chamada automaticamente
-; Recebe como parametros stringPTR que eh um ponteiro para a funcao presente na celula e cellPtr que eh um ponteiro para a celula
-; ---------------------------------------------------------------------------------------------------------------------------------------------------
+; Recebe como parametros stringPTR, um ponteiro para a funcao presente na celula, e cellPtr, um ponteiro para a celula
+;-----------------------------------------------------------------------------------------------------------------------------
 Update_SUM PROC USES EAX EBX ECX EDX, stringPTR: PTR DWORD, actualCell: PTR DWORD
 	LOCAL offset1: DWORD
 	LOCAL offset2: DWORD
@@ -2702,11 +2704,11 @@ Update_SUM PROC USES EAX EBX ECX EDX, stringPTR: PTR DWORD, actualCell: PTR DWOR
 	ret
 Update_SUM ENDP
 
-; ---------------------------------------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------------------------------------------------------
 ; Retorna o offset de uma celula a partir do nome dessa celula.
-; Recebe uma DWORD que eh uma string que representa a celula e um espaço em branco. ex: "A01 "
+; Recebe uma DWORD, uma string que representa a celula e um espaço em branco. ex: "A01 "
 ; Retorna em EAX o offset da celula desejada ou 0 em caso de erro
-; ---------------------------------------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------------------------------------------------------
 GetOffsetCell PROC USES EBX ECX EDX, cellAsString: DWORD
 	lea edx, cellAsString
 	xor eax, eax									; Limpa EAX
@@ -2723,7 +2725,7 @@ GetOffsetCell PROC USES EBX ECX EDX, cellAsString: DWORD
 	mul ebx											; Multiplica EAX pelo tamanho de uma celula, deslocando para a coluna desejada
 	pop edx											; Restitui o valor de EDX
 	inc edx											; "Aponta" EDX para o trecho da string que representa a linha
-	mov ecx, 2										; Atribui a ECX 2, que eh o numero de digitos que representam a linha
+	mov ecx, 2										; Atribui a ECX 2,, o numero de digitos que representam a linha
 	push eax										; Salva o valor de EAX
 	call ParseInteger32								; Transforma o numero da string em um inteiro e atribui a EAX
 	dec eax											; Ajusta o indice da celula que inicia a contagem em 0
@@ -2746,22 +2748,22 @@ GetOffsetCell PROC USES EBX ECX EDX, cellAsString: DWORD
 	ret
 GetOffsetCell ENDP
 
-; ---------------------------------------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------------------------------------------------------
 ; Atribui a cor de fundo e da fonte do texto
 ; Funcao chamada automaticamente
 ; Nao recebe nenhum parametro
-; ---------------------------------------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------------------------------------------------------
 SetColor PROC USES EAX, color: DWORD
 	mov eax, color
 	call SetTextColor
 	ret
 SetColor ENDP
 
-; ---------------------------------------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------------------------------------------------------
 ; Gera a base da interface da planila
 ; Funcao chamada automaticamente
 ; Nao recebe nenhum parametro
-; ---------------------------------------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------------------------------------------------------
 DrawBase PROC USES EAX ECX EDX
 	invoke GoToPosXY, 0, 0							; Move o cursor para o inicio da planilha
 	invoke SetColor, (blue + (16 * lightGray))		; Atribui a cor ao texto
@@ -2779,7 +2781,7 @@ DrawBase PROC USES EAX ECX EDX
 	call WriteString
 	call Crlf
 
-	mov edx, offset viewFunc						; Escreve a legenda da area que exibira a funcao presente na celula selecionada
+	mov edx, offset viewFunc						; Escreve a legenda da area que exibira a funcao presente
 	call WriteString
 	call Crlf
 
@@ -2815,11 +2817,11 @@ DrawBase PROC USES EAX ECX EDX
 	ret
 DrawBase ENDP
 
-; ---------------------------------------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------------------------------------------------------
 ; Exibe o conteudo das celulas em cada uma das posicoes da tela
 ; Funcao chamada automaticamente
 ; Nao recebe nenhum parametro
-; ---------------------------------------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------------------------------------------------------
 DrawData PROC USES EAX EBX ECX EDX ESI
 	LOCAL posx: DWORD
 	LOCAL posy: DWORD
@@ -2870,7 +2872,7 @@ DrawData PROC USES EAX EBX ECX EDX ESI
 	mWrite "                  "
 	jmp _nextCell
  _hasInt:											; Exibe o inteiro presente na celula
-	mov esi, INTPOS									; Para isso atribui ao ESI o deslocamento do inicio da celula ateh o valor inteiro
+	mov esi, INTPOS									; Para isso atribui ao ESI o deslocamento do inicio ateh o valor inteiro
 	mov eax, [edx + esi]
 	call WriteInt
 	jmp _nextCell									; Salta para a proxima celula
@@ -2909,11 +2911,11 @@ DrawData PROC USES EAX EBX ECX EDX ESI
 	ret
 DrawData ENDP
 
-; ---------------------------------------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------------------------------------------------------
 ; Move o cursor para uma determinada posicao, funcao gotoxy facilitada pelo uso de invoke
 ; Funcao chamada automaticamente
 ; Recebe como parametros duas DWORDs que sao, respectivamente, as posicoes x e y desejadas
-; ---------------------------------------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------------------------------------------------------
 GotoPosXY PROC USES EDX, posx: DWORD, posy: DWORD
 	mov dl, BYTE PTR posX
 	mov dh, BYTE PTR posY
@@ -2921,11 +2923,11 @@ GotoPosXY PROC USES EDX, posx: DWORD, posy: DWORD
 	ret
 GotoPosXY ENDP
 
-; ---------------------------------------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------------------------------------------------------
 ; Limpa o conteudo da planilha sem apagar a base da planilha
 ; Funcao chamada automaticamente
 ; Nao recebe nenhum parametro
-; ---------------------------------------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------------------------------------------------------
 ClearSheet	PROC USES EAX EBX ECX EDX
 	invoke SetColor, (lightGray + (16 * blue))		; Atribui a cor de fundo
 	mov eax, 6										; Posicao inicial em X
